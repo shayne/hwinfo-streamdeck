@@ -2,31 +2,46 @@
 
 ![alt text](images/demo.gif "HWiNFO64 Stream Deck Plugin Demo")
 
-> Before installing the Stream Deck Plugin, you will need to enable "Shared Memory Support" within HWiNFO64.
+> NOTICE: HWiNFO64 must be run in Sensors-only mode for the plugin to work. 
 
 ## Enabling Support in HWiNFO64
 
-1. Locate HWiNFO64 in your system tray
+1. Download and install HWiNFO64, if you haven't already
 
-    ![alt text](images/systray.png "HWiNFO64 System Tray Icon")
+    [HWiNFO Websote](https://www.hwinfo.com)
 
-2.  Right click and choose Settings
+2. Choose "Sensors-only" mode
 
-    ![alt text](images/contextmenu.png "HWiNFO64 Context Menu")
+    ![alt text](images/sensorsonly.png "HWiNFO64 Sensors Only")
 
-3.  Locate and check "Shared Memory Support"
+3. Click "Settings"
 
-    ![alt text](images/hwinfosettings.png "HWiNFO64 Settings")
+    ![alt text](images/clicksettings.png "HWiNFO64 Click Settings")
 
-4. Click OK
+4. Ensure "Shared Memory Support" is checked
 
-5. Quit HWiNFO64 and re-open
+    ![alt text](images/sharedmemory.png "HWiNFO64 Settings")
 
-    ![alt text](images/contextquit.png "Quit HWiNFO64")
+5. (Optional) Recommended launch settings
+
+    ![alt text](images/recommendedsettings.png "Quit HWiNFO64")
+
+6. Click "OK" then, "Run"
+
+    > If the plugin doesn't work immediately, you may have to quit and reopen HWiNFO64.
+    >
+    > From the system tray:
+    >
+    > ![alt text](images/contextquit.png "Quit HWiNFO64")
+
 
 ## Install and Setup the Plugin
 
-1. Download the pre-compiled plugin: [com.exension.hwinfo.streamDeckPlugin](../../raw/master/com.exension.hwinfo.streamDeckPlugin)
+1. Download the latest pre-compiled plugin
+
+    [Plugin Releases](../../releases)
+
+    > When upgrading, first uninstall: within the Stream Deck app choose "More Actions..." (bottom-right), locate "HWiNFO" and choose "Uninstall". Your tiles and settings will be preserved.
 
 2. Double-click to install the plugin
 
