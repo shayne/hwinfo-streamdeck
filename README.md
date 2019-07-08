@@ -6,6 +6,8 @@
 
 ## Enabling Support in HWiNFO64
 
+> NOTICE: It has been reported that running the "portable" version of HWiNFO64 doesn't work with this plugin. The recommendation is to run the version with the installer until I can figure out the issue.
+
 1. Download and install HWiNFO64, if you haven't already
 
     [HWiNFO Websote](https://www.hwinfo.com)
