@@ -1,5 +1,7 @@
 # HWiNFO Stream Deck Plugin
 
+## ⚠⚠ Major refactor landed in pre-release v2.0.0, plugin code to be open sourced, remote monitoring infrastructure support ⚠⚠ 
+
 ![alt text](images/demo.gif "HWiNFO64 Stream Deck Plugin Demo")
 
 > NOTICE: HWiNFO64 must be run in Sensors-only mode for the plugin to work. 
