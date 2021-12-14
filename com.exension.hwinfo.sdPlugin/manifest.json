@@ -1,0 +1,44 @@
+{
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.1"
+  },
+  "Actions": [
+    {
+      "Icon": "icon",
+      "Name": "HWiNFO",
+      "States": [
+        {
+          "Image": "defaultImage",
+          "TitleAlignment": "top",
+          "FontSize": "9",
+          "TitleColor": "#b7b7b7",
+          "ShowTitle": false
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Display sensor readings from HWiNFO",
+      "UUID": "com.exension.hwinfo.reading"
+    }
+  ],
+  "Author": "exension",
+  "CodePathWin": "hwinfo.exe",
+  "PropertyInspectorPath": "index_pi.html",
+  "Description": "Display sensor readings from HWiNFO64. This plugin is not afilliated with HWiNFO64, for more information and to download HWiNFO64 visit https://www.hwinfo.com",
+  "Name": "HWiNFO",
+  "Icon": "pluginIcon",
+  "URL": "https://github.com/exension/hwinfo-streamdeck",
+  "Version": "2.0.2",
+  "ApplicationsToMonitor": {
+    "windows": [
+      "HWiNFO64.EXE",
+      "HWiNFO64.exe"
+    ]
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ]
+}

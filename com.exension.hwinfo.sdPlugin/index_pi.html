@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>Property Inspector Samples PI</title>
+  <link rel="stylesheet" href="css/sdpi.css" />
+  <!--link rel="stylesheet" 
+              media="screen and (max-width: 1025px)" 
+              href="css/local.css" -->
+  <link rel="stylesheet" href="css/local.css" />
+  <style>
+    #error {
+      display: none;
+    }
+
+    #sensorSelect {
+      max-width: 226px;
+      padding-right: 25px;
+      font-family: monospace;
+    }
+
+    #sensorSelect option {
+      font-family: monospace;
+    }
+
+    #readingSelect {
+      max-width: 226px;
+      padding-right: 25px;
+      font-family: monospace;
+    }
+
+    #readingSelect option {
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="error" class="sdpi-wrapper localbody hiddenx">
+    <div class="sdpi-heading">Plugin Error</div>
+    <div class="sdpi-item">
+      <details open class="message caution">
+        <summary>Unable To Communicate With HWiNFO64</summary>
+        <p>
+          The plugin is unable to communicate with HWiNFO64
+        </p>
+        <p>Make sure it's running and configured properly</p>
+        <p>
+          For help on how to properly setup HWiNFO64, refer to the
+          <a class="info" target="_blank"
+            href="https://github.com/exension/hwinfo-streamdeck/blob/master/README.md#hwinfo-stream-deck-plugin">
+            documentation
+          </a>
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <div id="ui" class="sdpi-wrapper localbody hiddenx">
+    <div class="sdpi-heading">Font Sizes</div>
+
+    <div type="range" class="sdpi-item" id="titleFontSize">
+      <div class="sdpi-item-label">Title</div>
+      <div class="sdpi-item-value">
+        <span value="8">8</span>
+        <input type="range" min="8" max="20" step="0.5" value="10.5" list="steplist" />
+        <span value="20">20</span>
+      </div>
+    </div>
+
+    <div type="range" class="sdpi-item" id="valueFontSize">
+      <div class="sdpi-item-label">Value</div>
+      <div class="sdpi-item-value">
+        <span value="8">8</span>
+        <input type="range" min="8" max="20" step="0.5" value="10.5" />
+        <span value="20">20</span>
+      </div>
+    </div>
+
+    <div class="sdpi-heading">HWiNFO Sensors</div>
+
+    <div class="sdpi-item">
+      <div class="sdpi-item-label">Sensor</div>
+      <select class="sdpi-item-value select" id="sensorSelect" disabled="disabled">
+        <option>Loading...</option>
+      </select>
+    </div>
+
+    <div class="sdpi-item" id="readingSelectContainer">
+      <div class="sdpi-item-label">Reading</div>
+      <select class="sdpi-item-value select" id="readingSelect" disabled="disabled">
+        <option></option>
+      </select>
+    </div>
+
+    <div class="sdpi-heading">Value Params</div>
+
+    <div type="sdpi-item" class="sdpi-item" id="paramsgroup">
+      <div class="sdpi-item-label">Min/Max</div>
+
+      <div class="sdpi-item" id="minmax" style="margin-left: -4px">
+        <input class="sdpi-item-value" style="width:4em" placeholder="Min" inputmode="numeric" pattern="[0-9]*"
+          type="number" id="min" name="min" />
+        <input class="sdpi-item-value" style="margin-left: -7px; width:4em" placeholder=" Max" inputmode="numeric"
+          pattern="[0-9]*" type="number" id="max" name="max" />
+      </div>
+    </div>
+
+    <details id="advanced_details">
+      <summary>Advanced</summary>
+      <div class="sdpi-item" id="format">
+        <div class="sdpi-item-label">Format</div>
+        <input class="sdpi-item-value" placeholder="%.0f (no decimals)" type="text" name="format" value="" />
+      </div>
+      <div class="sdpi-item">
+        <details open class="message question noInnerMargins">
+          <summary>Help</summary>
+          <p>Format can be used to modify format of the value.</p>
+          <p>
+            For more information on how to use this field,
+            <a target="_BLANK" href="#"
+              onclick="openUrl('https://gobyexample.com/string-formatting'); return false;">click here</a>.
+          </p>
+        </details>
+      </div>
+
+      <div class="sdpi-item" id="divisor">
+        <div class="sdpi-item-label">Divisor</div>
+        <input class="sdpi-item-value" placeholder="e.g. 125 (for bytes to megabits)" inputmode="numeric"
+          pattern="[0-9]*" min="1" type="number" name="divisor" />
+      </div>
+      <div class="sdpi-item">
+        <details open class="message question noInnerMargins">
+          <summary>Help</summary>
+          <p>Divisor can be used to convert the value.</p>
+          <p>
+            For example, converting bytes to megabits, set the divisor to:
+            "125"
+          </p>
+        </details>
+      </div>
+    </details>
+
+    <div class="sdpi-heading">Graph Colors</div>
+
+    <div type="color" class="sdpi-item" id="colorselection">
+      <div class="sdpi-item-label">Background</div>
+      <input type="color" class="sdpi-item-value" id="background" value="#000000" />
+      <div class="sdpi-item-label">Value Text</div>
+      <input type="color" class="sdpi-item-value" id="valuetext" value="#ffffff" />
+    </div>
+
+    <div type="color" class="sdpi-item" id="colorselection">
+      <div class="sdpi-item-label">Foreground</div>
+      <input type="color" class="sdpi-item-value" id="foreground" value="#005128" />
+      <div class="sdpi-item-label">Highlight</div>
+      <input type="color" class="sdpi-item-value" id="highlight" value="#009e00" />
+    </div>
+  </div>
+  <!-- <script src="echomd.js"></script> -->
+  <script src="index_pi.js"></script>
+</body>
+
+</html>

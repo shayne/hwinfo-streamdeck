@@ -1,6 +1,18 @@
 # HWiNFO Stream Deck Plugin
 
-## ⚠⚠ Major refactor landed in pre-release v2.0.0, plugin code to be open sourced, remote monitoring infrastructure support ⚠⚠ 
+## ⚠⚠ Major refactor landed in pre-release v2.0.0, plugin code open sourced, remote monitoring infrastructure support ⚠⚠ 
+
+---
+
+>## Thank you & Looking for Maintainers
+>
+>Thank you everyone who has used and enjoyed this plugin. It started as a passion project and I continue to use it day to day. I am happy to finally release the full source on GitHub. When I first built it, it was closed under agreement with the HWiNFO64 project. They have since opened up the shared memory interface and now the plugin is freely open.
+>
+>I haven't had the time to dedicate to this project in some time and appreciate everyone for hanging in there. I hope to work with some of you who are eager to take the project over. I am happy and ready to hand over the reigns. If there are development questions I'm happy to share my thoughts on the code and structure that exists.
+>
+>*-Shayne*
+
+---
 
 ![alt text](images/demo.gif "HWiNFO64 Stream Deck Plugin Demo")
 

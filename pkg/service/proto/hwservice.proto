@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service/proto";
+
+import "google/protobuf/empty.proto";
+
+package proto;
+
+service HWService {
+  rpc PollTime(google.protobuf.Empty) returns (PollTimeReply) {}
+  rpc Sensors(google.protobuf.Empty) returns (stream Sensor) {}
+  rpc ReadingsForSensorID(SensorIDRequest) returns (stream Reading) {}
+}
+
+message PollTimeReply { uint64 pollTime = 1; }
+
+message Sensor {
+  string ID = 1;
+  string name = 2;
+}
+
+message SensorIDRequest { string id = 1; }
+
+message Reading {
+  int32 ID = 1;
+  int32 typeI = 2;
+  string type = 3;
+  string label = 4;
+  string unit = 5;
+  double value = 6;
+  double valueMin = 7;
+  double valueMax = 8;
+  double valueAvg = 9;
+}
