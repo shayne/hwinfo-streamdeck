@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io/ioutil"
 	"log"
 
 	// "net/http"
@@ -28,24 +29,31 @@ func main() {
 		log.Fatalf("Unable to chdir: %v", err)
 	}
 
-	appdata := os.Getenv("APPDATA")
-	logpath := filepath.Join(appdata, "Elgato/StreamDeck/Plugins/com.exension.hwinfo.sdPlugin/hwinfo.log")
-	f, err := os.OpenFile(logpath, os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatalf("OpenFile Log: %v", err)
-	}
-	err = f.Truncate(0)
-	if err != nil {
-		log.Fatalf("Truncate Log: %v", err)
-	}
-	defer func() {
-		err := f.Close()
-		if err != nil {
-			log.Fatalf("File Close: %v", err)
-		}
-	}()
-	log.SetOutput(f)
-	log.SetFlags(0)
+	// PRODUCTION
+	// LOGGING DISABLED:
+	//
+	log.SetOutput(ioutil.Discard)
+
+	// DEBUG LOGGING:
+	//
+	// appdata := os.Getenv("APPDATA")
+	// logpath := filepath.Join(appdata, "Elgato/StreamDeck/Plugins/com.exension.hwinfo.sdPlugin/hwinfo.log")
+	// f, err := os.OpenFile(logpath, os.O_RDWR|os.O_CREATE, 0666)
+	// if err != nil {
+	// 	log.Fatalf("OpenFile Log: %v", err)
+	// }
+	// err = f.Truncate(0)
+	// if err != nil {
+	// 	log.Fatalf("Truncate Log: %v", err)
+	// }
+	// defer func() {
+	// 	err := f.Close()
+	// 	if err != nil {
+	// 		log.Fatalf("File Close: %v", err)
+	// 	}
+	// }()
+	// log.SetOutput(f)
+	// log.SetFlags(0)
 
 	flag.Parse()
 
