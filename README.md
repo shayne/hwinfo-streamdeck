@@ -24,7 +24,7 @@
 
 1. Download and install HWiNFO64, if you haven't already
 
-    [HWiNFO Websote](https://www.hwinfo.com)
+    [HWiNFO Website](https://www.hwinfo.com)
 
 2. Choose "Sensors-only" mode
 
