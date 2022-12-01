@@ -59,6 +59,7 @@ func ReadBytes() ([]byte, error) {
 		return nil, err
 	}
 	defer unmapViewOfFile(addr)
+	defer windows.CloseHandle(windows.Handle(hnd))
 
 	return copyBytes(addr), nil
 }
