@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo"
 )
 
 // Service wraps hwinfo shared mem streaming

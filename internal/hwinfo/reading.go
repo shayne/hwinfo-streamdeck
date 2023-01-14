@@ -8,7 +8,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo/util"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo/util"
 )
 
 // ReadingType enum of value/unit type for reading

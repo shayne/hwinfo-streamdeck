@@ -1,8 +1,8 @@
 package plugin
 
 import (
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo"
-	hwsensorsservice "github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo"
+	hwsensorsservice "github.com/shayne/hwinfo-streamdeck/pkg/service"
 )
 
 // Plugin implementation

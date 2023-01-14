@@ -10,7 +10,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo/util"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo/util"
 )
 
 var ghnd C.HANDLE

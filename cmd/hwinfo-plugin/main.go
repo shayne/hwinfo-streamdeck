@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/hashicorp/go-plugin"
-	hwinfoplugin "github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo/plugin"
-	hwsensorsservice "github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service"
+	hwinfoplugin "github.com/shayne/hwinfo-streamdeck/internal/hwinfo/plugin"
+	hwsensorsservice "github.com/shayne/hwinfo-streamdeck/pkg/service"
 )
 
 func main() {

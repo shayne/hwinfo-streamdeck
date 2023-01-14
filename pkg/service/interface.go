@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service/proto"
+	"github.com/shayne/hwinfo-streamdeck/pkg/service/proto"
 )
 
 // Handshake is a common handshake that is shared by plugin and host.

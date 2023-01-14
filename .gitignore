@@ -27,3 +27,6 @@ graph.png
 cpu.prof
 mem.prof
 cmd/hwinfostreamdeckplugin/debug
+
+# dep cache (protoc)
+.cache/

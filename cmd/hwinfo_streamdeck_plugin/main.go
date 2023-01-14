@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	plugin "github.com/shayne/go-hwinfo-streamdeck-plugin/internal/app/hwinfostreamdeckplugin"
+	plugin "github.com/shayne/hwinfo-streamdeck/internal/app/hwinfostreamdeckplugin"
 )
 
 var port = flag.String("port", "", "The port that should be used to create the WebSocket")

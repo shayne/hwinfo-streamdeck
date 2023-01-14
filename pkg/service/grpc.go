@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service/proto"
+	"github.com/shayne/hwinfo-streamdeck/pkg/service/proto"
 )
 
 // GRPCClient is an implementation of KV that talks over RPC.

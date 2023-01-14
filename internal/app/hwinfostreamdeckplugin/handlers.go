@@ -5,8 +5,8 @@ import (
 	"image/color"
 	"strconv"
 
-	hwsensorsservice "github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/streamdeck"
+	hwsensorsservice "github.com/shayne/hwinfo-streamdeck/pkg/service"
+	"github.com/shayne/hwinfo-streamdeck/pkg/streamdeck"
 )
 
 func (p *Plugin) handleSensorSelect(event *streamdeck.EvSendToPlugin, sdpi *evSdpiCollection) error {

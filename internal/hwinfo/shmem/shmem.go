@@ -12,8 +12,8 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo/mutex"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/internal/hwinfo/util"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo/mutex"
+	"github.com/shayne/hwinfo-streamdeck/internal/hwinfo/util"
 	"golang.org/x/sys/windows"
 )
 
@@ -59,7 +59,7 @@ func ReadBytes() ([]byte, error) {
 		return nil, err
 	}
 	defer unmapViewOfFile(addr)
-	defer windows.CloseHandle(windows.Handle(hnd))
+	defer windows.CloseHandle(windows.Handle(unsafe.Pointer(hnd)))
 
 	return copyBytes(addr), nil
 }
@@ -78,7 +78,7 @@ func openFileMapping() (C.HANDLE, error) {
 }
 
 func mapViewOfFile(hnd C.HANDLE) (uintptr, error) {
-	addr, err := windows.MapViewOfFile(windows.Handle(hnd), C.FILE_MAP_READ, 0, 0, 0)
+	addr, err := windows.MapViewOfFile(windows.Handle(unsafe.Pointer(hnd)), C.FILE_MAP_READ, 0, 0, 0)
 	if err != nil {
 		return 0, fmt.Errorf("MapViewOfFile: %w", err)
 	}

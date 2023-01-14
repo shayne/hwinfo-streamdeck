@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/graph"
-	hwsensorsservice "github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/service"
-	"github.com/shayne/go-hwinfo-streamdeck-plugin/pkg/streamdeck"
 	"github.com/shayne/go-winpeg"
+	"github.com/shayne/hwinfo-streamdeck/pkg/graph"
+	hwsensorsservice "github.com/shayne/hwinfo-streamdeck/pkg/service"
+	"github.com/shayne/hwinfo-streamdeck/pkg/streamdeck"
 )
 
 // Plugin handles information between HWiNFO and Stream Deck
