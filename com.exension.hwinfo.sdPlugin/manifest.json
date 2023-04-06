@@ -28,7 +28,7 @@
   "Name": "HWiNFO",
   "Icon": "pluginIcon",
   "URL": "https://github.com/shayne/hwinfo-streamdeck",
-  "Version": "2.0.4",
+  "Version": "2.0.5",
   "ApplicationsToMonitor": {
     "windows": ["HWiNFO64.EXE", "HWiNFO64.exe"]
   },
