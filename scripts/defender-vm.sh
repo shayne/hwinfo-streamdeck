@@ -9,8 +9,12 @@
 # xorrisofs, ssh/scp, python3, a Windows 11 ISO. About 25 GB disk for the VM.
 #
 # Usage: scripts/defender-vm.sh <command> [args]
-#   create  --iso <win11.iso>   unattended install, then OpenSSH; takes a while
-#   prepare                     update the Defender platform, reboot so the
+#   create  --iso <win11.iso>   unattended install (English Windows 11 ISO;
+#                               autounattend.xml sets en-US), then OpenSSH;
+#                               takes a while
+#   prepare                     install all Windows updates, rebooting until
+#                               none remain, then update the Defender
+#                               platform, reboot so the
 #                               platform switch is committed, update the
 #                               definitions, validate the cloud connection,
 #                               shut down
@@ -279,6 +283,51 @@ fresh_run() {
   cp "$BASE_TPM"/tpm2-* "$RUN/tpm/" 2>/dev/null || true
 }
 
+# PowerShell snippet: "os <build>.<revision> <display version> <UI language>".
+OS_BUILD_PS='
+  $cv = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+  "os $($cv.CurrentBuild).$($cv.UBR) $($cv.DisplayVersion) $((Get-UICulture).Name)"
+'
+os_build() { vm_ps "$OS_BUILD_PS" 2>/dev/null | tr -d '\r' | sed -n 's/^os //p' | head -1; }
+
+# Installs all pending Windows updates. windows-update.ps1 runs as SYSTEM from
+# a scheduled task, because the Windows Update Agent API refuses to download or
+# install from an ssh session, and reports through C:\wu\status.txt. Reboots
+# and searches again until a search finds nothing, at most $1 rounds. An error
+# round (often the guest's own automatic update holding the installer) is
+# retried after the reboot as well.
+install_windows_updates() {
+  local rounds="${1:-15}" i last deadline
+  for i in $(seq 1 "$rounds"); do
+    log "windows update round $i on $(os_build)"
+    vm_ps 'New-Item -ItemType Directory -Force C:\wu | Out-Null; if (Test-Path C:\wu\status.txt) { Remove-Item C:\wu\status.txt }' >/dev/null || return 1
+    vm_put "$ASSETS/windows-update.ps1" 'C:/wu/windows-update.ps1' || return 1
+    vm_ps '
+      $a = New-ScheduledTaskAction -Execute powershell.exe -Argument "-NoProfile -ExecutionPolicy Bypass -File C:\wu\windows-update.ps1"
+      Register-ScheduledTask -TaskName defender-vm-wu -Action $a -User SYSTEM -RunLevel Highest -Force | Out-Null
+      Start-ScheduledTask -TaskName defender-vm-wu
+    ' >/dev/null || return 1
+    deadline=$(( $(date +%s) + 7200 )); last=""
+    while [ "$(date +%s)" -lt "$deadline" ]; do
+      last="$(vm_ps 'Get-Content C:\wu\status.txt -Tail 1 -ErrorAction SilentlyContinue' 2>/dev/null | tr -d '\r' | tail -1)"
+      case "$last" in done*|error*) break ;; esac
+      sleep 30
+    done
+    vm_ps 'Get-Content C:\wu\status.txt -ErrorAction SilentlyContinue' 2>/dev/null | tr -d '\r' | grep -E '^(found|skip|result)' | sed 's/^/  /' >&2 || true
+    log "windows update round $i: ${last:-no answer}"
+    case "$last" in
+      "done 0 "*) vm_ps 'Unregister-ScheduledTask -TaskName defender-vm-wu -Confirm:$false' >/dev/null 2>&1 || true; return 0 ;;
+      done*|error*) ;;
+      *) log "windows update round $i did not finish"; return 1 ;;
+    esac
+    vm_ps 'Restart-Computer -Force' >/dev/null 2>&1 || true
+    sleep 60
+    wait_ssh 1800 || { log "no ssh after the update reboot"; return 1; }
+  done
+  log "updates still pending after $rounds rounds"
+  return 1
+}
+
 cmd_create() {
   local iso=""
   while [ $# -gt 0 ]; do case "$1" in --iso) iso="$2"; shift 2 ;; *) die "unknown option: $1" ;; esac; done
@@ -323,6 +372,10 @@ cmd_prepare() {
     start_vm "$BASE_DISK" "$BASE_VARS" "$BASE_TPM"
     wait_ssh 600 || die "no ssh"
   fi
+  # Windows itself first: a baseline on the build of the ISO behaves like an
+  # unpatched install, and messages and policies change with the updates.
+  install_windows_updates || die "Windows updates did not complete"
+  log "Windows up to date: $(os_build)"
   # The first update after a fresh install pulls in a platform update: the
   # service restarts into the new platform and the definitions of that same
   # call are lost. Without a reboot the switch is not committed and every
@@ -419,6 +472,8 @@ cmd_scan() {
     \$r.signatures_before = [ordered]@{ version = '$DEF_BEFORE' }
     \$r.maps = (& \$mp -ValidateMapsConnection 2>&1 | Out-String)
     \$s = Get-MpComputerStatus
+    \$cv = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+    \$r.os = [ordered]@{ build = \"\$(\$cv.CurrentBuild).\$(\$cv.UBR)\"; version = \$cv.DisplayVersion; ui = (Get-UICulture).Name }
     \$r.versions = [ordered]@{ platform = \$s.AMProductVersion; engine = \$s.AMEngineVersion; signatures = \$s.AntivirusSignatureVersion; signatures_updated = \$s.AntivirusSignatureLastUpdated.ToString('o'); realtime = \$s.RealTimeProtectionEnabled }
     \$pref = Get-MpPreference
     \$r.cloud = [ordered]@{ maps = \$pref.MAPSReporting; samples = \$pref.SubmitSamplesConsent; blocklevel = \$pref.CloudBlockLevel }
@@ -464,7 +519,9 @@ stale = bool(minsig) and ver(v["signatures"]) < ver(minsig)
 sig = f"signatures {v['signatures']} (updated {v.get('signatures_updated', '?')[:19]}, at boot {before}"
 sig += f", required at least {minsig}" if minsig else ""
 sig += ")"
+o = r.get("os", {})
 lines = ["# Defender VM scan", "",
+         f"- Windows {o.get('build', '?')} ({o.get('version', '?')}, {o.get('ui', '?')})",
          f"- Platform {v['platform']}, engine {v['engine']}, {sig}, real-time protection {v['realtime']}",
          f"- Cloud: MAPS {c['maps']}, sample submission {c['samples']}, block level {c['blocklevel']}",
          f"- Cloud connection: {'ok' if 'ValidateMapsConnection successfully' in r['maps'] else 'NOT validated'}", ""]
