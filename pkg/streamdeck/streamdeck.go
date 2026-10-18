@@ -401,7 +401,7 @@ func (sd *StreamDeck) SetSettings(context string, payload interface{}) error {
 func (sd *StreamDeck) SetImage(context string, bts []byte) error {
 	b64 := base64.StdEncoding.EncodeToString(bts)
 	event := evSetImage{Event: "setImage", Context: context, Payload: evSetImagePayload{
-		Image:  fmt.Sprintf("data:image/png;base64, %s", b64),
+		Image:  "data:image/png;base64," + b64,
 		Target: 0,
 	}}
 	data, err := json.Marshal(event)
