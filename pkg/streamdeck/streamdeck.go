@@ -397,11 +397,20 @@ func (sd *StreamDeck) SetSettings(context string, payload interface{}) error {
 	return nil
 }
 
+// setImageDataURL encodes PNG bytes as a data URL. No whitespace after the
+// comma: Elgato's software and browsers decode forgivingly (WHATWG Infra
+// forgiving-base64 decode strips ASCII whitespace first), but stricter hosts
+// such as OpenDeck validate with /;base64,([A-Za-z0-9+\/]+={0,2})?/ and fall
+// back to the action's default image when the base64 part does not start right
+// after the comma (PR #130).
+func setImageDataURL(bts []byte) string {
+	return "data:image/png;base64," + base64.StdEncoding.EncodeToString(bts)
+}
+
 // SetImage dynamically changes the image displayed by an instance of an action
 func (sd *StreamDeck) SetImage(context string, bts []byte) error {
-	b64 := base64.StdEncoding.EncodeToString(bts)
 	event := evSetImage{Event: "setImage", Context: context, Payload: evSetImagePayload{
-		Image:  "data:image/png;base64," + b64,
+		Image:  setImageDataURL(bts),
 		Target: 0,
 	}}
 	data, err := json.Marshal(event)
